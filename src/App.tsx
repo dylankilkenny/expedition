@@ -78,7 +78,7 @@ function App(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chains, selectedChain]);
 
-  const [query, setQuery] = useQueryParams({
+  const [query, _setQuery] = useQueryParams({
     network: StringParam,
     rpcUrl: StringParam,
   });
