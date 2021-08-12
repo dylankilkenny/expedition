@@ -8,56 +8,43 @@ import {
   InputBase,
   Tooltip,
   CircularProgress,
-} from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
-import Link from "@material-ui/core/Link";
-import React, {
-  Dispatch,
-  ChangeEvent,
-  KeyboardEvent,
-  useState,
-  useEffect,
-} from "react";
-import { Link as RouterLink, Router, Route, Switch } from "react-router-dom";
-import useDarkMode from "use-dark-mode";
-import "./App.css";
-import Address from "./containers/Address";
-import Block from "./containers/Block";
-import Dashboard from "./containers/Dashboard";
-import NodeView from "./containers/NodeView";
-import Transaction from "./containers/Transaction";
-import { darkTheme, lightTheme } from "./themes/jadeTheme";
-import Brightness3Icon from "@material-ui/icons/Brightness3";
-import NotesIcon from "@material-ui/icons/Notes";
-import WbSunnyIcon from "@material-ui/icons/WbSunny";
-import CodeIcon from "@material-ui/icons/Code";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import useInterval from "use-interval";
-import ETHJSONSpec from "@etclabscore/ethereum-json-rpc-specification/openrpc.json";
-import { useTranslation } from "react-i18next";
-import LanguageMenu from "./containers/LanguageMenu";
-import { createBrowserHistory } from "history";
-import ChainDropdown from "./components/ChainDropdown/ChainDropdown";
-import {
-  StringParam,
-  QueryParamProvider,
-  useQueryParams,
-} from "use-query-params";
-import { createPreserveQueryHistory } from "./helpers/createPreserveHistory";
-import BlockRawContainer from "./containers/BlockRawContainer";
-import TransactionRawContainer from "./containers/TransactionRawContainer";
-import expeditionLogo from "./expedition.png";
-import MinerStatsPage from "./containers/MinerStatsPage";
-import { IChain as Chain } from "./models/chain";
-import useChainListStore from "./stores/useChainListStore";
-import useEthRPCStore from "./stores/useEthRPCStore";
-import AddChain from "./components/AddChain/AddChain";
-import { NetworkWifi } from "@material-ui/icons";
+} from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
+import Link from '@material-ui/core/Link';
+import React, { Dispatch, ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
+import { Link as RouterLink, Router, Route, Switch } from 'react-router-dom';
+import useDarkMode from 'use-dark-mode';
+import './App.css';
+import Address from './containers/Address';
+import Block from './containers/Block';
+import Dashboard from './containers/Dashboard';
+import NodeView from './containers/NodeView';
+import Transaction from './containers/Transaction';
+import { darkTheme, lightTheme } from './themes/jadeTheme';
+import Brightness3Icon from '@material-ui/icons/Brightness3';
+import NotesIcon from '@material-ui/icons/Notes';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import CodeIcon from '@material-ui/icons/Code';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import useInterval from 'use-interval';
+import ETHJSONSpec from '@etclabscore/ethereum-json-rpc-specification/openrpc.json';
+import { useTranslation } from 'react-i18next';
+import LanguageMenu from './containers/LanguageMenu';
+import { createBrowserHistory } from 'history';
+import ChainDropdown from './components/ChainDropdown/ChainDropdown';
+import { StringParam, QueryParamProvider, useQueryParams } from 'use-query-params';
+import { createPreserveQueryHistory } from './helpers/createPreserveHistory';
+import BlockRawContainer from './containers/BlockRawContainer';
+import TransactionRawContainer from './containers/TransactionRawContainer';
+import expeditionLogo from './expedition.png';
+import MinerStatsPage from './containers/MinerStatsPage';
+import { IChain as Chain } from './models/chain';
+import useChainListStore from './stores/useChainListStore';
+import useEthRPCStore from './stores/useEthRPCStore';
+import AddChain from './components/AddChain/AddChain';
+import { NetworkWifi } from '@material-ui/icons';
 
-const history = createPreserveQueryHistory(createBrowserHistory, [
-  "network",
-  "rpcUrl",
-])();
+const history = createPreserveQueryHistory(createBrowserHistory, ['network', 'rpcUrl'])();
 
 function App(props: any) {
   const { t } = useTranslation();
@@ -69,8 +56,7 @@ function App(props: any) {
   const [chains, setChains] = useChainListStore<[Chain[], Dispatch<Chain[]>]>();
   const [ethRPC, setEthRPCChain] = useEthRPCStore();
 
-  const [addChainDialogIsOpen, setAddChainDialogIsOpen] =
-    useState<boolean>(false);
+  const [addChainDialogIsOpen, setAddChainDialogIsOpen] = useState<boolean>(false);
 
   // default the selectedChain once chain list loads
   useEffect(() => {
@@ -114,9 +100,7 @@ function App(props: any) {
     }
 
     if (chains && query.network) {
-      const foundChain = chains.find(
-        (chain: Chain) => chain.name === query.network
-      );
+      const foundChain = chains.find((chain: Chain) => chain.name === query.network);
       setSelectedChain(foundChain);
     } else {
       setSelectedChain(chains[0]);
@@ -124,22 +108,22 @@ function App(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chains, query.network]);
 
-  // keeps the window.location in sync with selected network
-  useEffect(() => {
-    if (selectedChain === undefined) {
-      return;
-    }
-    const { name } = selectedChain as Chain;
+  // // keeps the window.location in sync with selected network
+  // useEffect(() => {
+  //   if (selectedChain === undefined) {
+  //     return;
+  //   }
+  //   const { name } = selectedChain as Chain;
 
-    if (name !== query.network) {
-      setQuery({ network: name });
-      history.push({
-        pathname: history.location.pathname,
-        search: `?network=${name}`,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChain, setQuery]);
+  //   if (name !== query.network) {
+  //     setQuery({ network: name });
+  //     history.push({
+  //       pathname: history.location.pathname,
+  //       search: `?network=${name}`,
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedChain, setQuery]);
 
   // keep selected chain in sync with the current ethrpc instance
   useEffect(() => {
@@ -211,10 +195,7 @@ function App(props: any) {
       }
     }
     if (isBlockNumber(q)) {
-      const block = await ethRPC.eth_getBlockByNumber(
-        `0x${parseInt(q, 10).toString(16)}`,
-        false
-      );
+      const block = await ethRPC.eth_getBlockByNumber(`0x${parseInt(q, 10).toString(16)}`, false);
       if (block) {
         history.push(`/block/${block.hash}`);
       }
@@ -240,38 +221,22 @@ function App(props: any) {
       <ThemeProvider theme={theme}>
         <AppBar position="sticky" color="default" elevation={0}>
           <Toolbar>
-            <Grid
-              justify="space-between"
-              alignItems="center"
-              alignContent="center"
-              container
-            >
-              <Grid item style={{ marginTop: "8px" }}>
+            <Grid justify="space-between" alignItems="center" alignContent="center" container>
+              <Grid item style={{ marginTop: '8px' }}>
                 <Link
-                  component={({
-                    className,
-                    children,
-                  }: {
-                    children: any;
-                    className: string;
-                  }) => (
-                    <RouterLink className={className} to={"/"}>
+                  component={({ className, children }: { children: any; className: string }) => (
+                    <RouterLink className={className} to={'/'}>
                       {children}
                     </RouterLink>
                   )}
                 >
                   <Grid container>
                     <Grid>
-                      <img
-                        alt="expedition-logo"
-                        height="30"
-                        style={{ marginRight: "10px" }}
-                        src={expeditionLogo}
-                      />
+                      <img alt="expedition-logo" height="30" style={{ marginRight: '10px' }} src={expeditionLogo} />
                     </Grid>
                     <Grid>
                       <Typography color="textSecondary" variant="h6">
-                        {t("Expedition")}
+                        {t('Expedition')}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -279,9 +244,7 @@ function App(props: any) {
               </Grid>
               <Grid item md={6} xs={12}>
                 <InputBase
-                  placeholder={t(
-                    "Enter an Address, Transaction Hash or Block Number"
-                  )}
+                  placeholder={t('Enter an Address, Transaction Hash or Block Number')}
                   onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
                     if (event.keyCode === 13) {
                       handleSearch(search);
@@ -295,25 +258,21 @@ function App(props: any) {
                   }}
                   fullWidth
                   style={{
-                    background: "rgba(0,0,0,0.1)",
-                    borderRadius: "4px",
-                    padding: "5px 10px 0px 10px",
-                    marginRight: "5px",
+                    background: 'rgba(0,0,0,0.1)',
+                    borderRadius: '4px',
+                    padding: '5px 10px 0px 10px',
+                    marginRight: '5px',
                   }}
                 />
               </Grid>
               <Grid item>
                 {selectedChain ? (
-                  <ChainDropdown
-                    chains={chains}
-                    onChange={setSelectedChain}
-                    selected={selectedChain}
-                  />
+                  <ChainDropdown chains={chains} onChange={setSelectedChain} selected={selectedChain} />
                 ) : (
                   <>
                     {query && query.rpcUrl && (
                       <Tooltip title={query.rpcUrl}>
-                        <IconButton >
+                        <IconButton>
                           <NetworkWifi />
                         </IconButton>
                       </Tooltip>
@@ -321,34 +280,30 @@ function App(props: any) {
                     {!query.rpcUrl && <CircularProgress />}
                   </>
                 )}
-                <Tooltip title={t("Add custom chain") as string}>
+                <Tooltip title={t('Add custom chain') as string}>
                   <IconButton onClick={openAddChainModal}>
                     <PlaylistAddIcon />
                   </IconButton>
                 </Tooltip>
                 <LanguageMenu />
-                <Tooltip title={t("JSON-RPC API Documentation") as string}>
+                <Tooltip title={t('JSON-RPC API Documentation') as string}>
                   <IconButton
                     onClick={
                       () =>
                         window.open(
-                          "https://playground.open-rpc.org/?schemaUrl=https://raw.githubusercontent.com/etclabscore/ethereum-json-rpc-specification/master/openrpc.json"
+                          'https://playground.open-rpc.org/?schemaUrl=https://raw.githubusercontent.com/etclabscore/ethereum-json-rpc-specification/master/openrpc.json'
                         ) //tslint:disable-line
                     }
                   >
                     <NotesIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={t("Expedition Github") as string}>
-                  <IconButton
-                    onClick={() =>
-                      window.open("https://github.com/xops/expedition")
-                    }
-                  >
+                <Tooltip title={t('Expedition Github') as string}>
+                  <IconButton onClick={() => window.open('https://github.com/xops/expedition')}>
                     <CodeIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={t("Toggle Dark Mode") as string}>
+                <Tooltip title={t('Toggle Dark Mode') as string}>
                   <IconButton onClick={darkMode.toggle}>
                     {darkMode.value ? <Brightness3Icon /> : <WbSunnyIcon />}
                   </IconButton>
@@ -357,32 +312,21 @@ function App(props: any) {
             </Grid>
           </Toolbar>
         </AppBar>
-        <AddChain
-          open={addChainDialogIsOpen}
-          onCancel={cancelAddChainDialog}
-          onSubmit={submitAddChainDialog}
-        />
-        <div style={{ margin: "0px 25px 0px 25px" }}>
+        <AddChain open={addChainDialogIsOpen} onCancel={cancelAddChainDialog} onSubmit={submitAddChainDialog} />
+        <div style={{ margin: '0px 25px 0px 25px' }}>
           <QueryParamProvider ReactRouterRoute={Route}>
             <CssBaseline />
             <Switch>
-              <Route path={"/"} component={Dashboard} exact={true} />
-              <Route
-                path={"/stats/miners"}
-                component={MinerStatsPage}
-                exact={true}
-              />
-              <Route path={"/stats/miners/:block"} component={MinerStatsPage} />
-              <Route path={"/block/:hash/raw"} component={BlockRawContainer} />
-              <Route path={"/block/:hash"} component={Block} />
-              <Route path={"/blocks/:number"} component={NodeView} />
-              <Route
-                path={"/tx/:hash/raw"}
-                component={TransactionRawContainer}
-              />
-              <Route path={"/tx/:hash"} component={Transaction} />
-              <Route path={"/address/:address/:block"} component={Address} />
-              <Route path={"/address/:address"} component={Address} />
+              <Route path={'/'} component={Dashboard} exact={true} />
+              <Route path={'/stats/miners'} component={MinerStatsPage} exact={true} />
+              <Route path={'/stats/miners/:block'} component={MinerStatsPage} />
+              <Route path={'/block/:hash/raw'} component={BlockRawContainer} />
+              <Route path={'/block/:hash'} component={Block} />
+              <Route path={'/blocks/:number'} component={NodeView} />
+              <Route path={'/tx/:hash/raw'} component={TransactionRawContainer} />
+              <Route path={'/tx/:hash'} component={Transaction} />
+              <Route path={'/address/:address/:block'} component={Address} />
+              <Route path={'/address/:address'} component={Address} />
             </Switch>
           </QueryParamProvider>
         </div>
